@@ -10,6 +10,16 @@ module Web
     puts res
   end
 
+  def notifications(student)
+    notification = {
+      status: 'unread',
+      body: "#{student.fullname} has sent homework #{student.submited.last}"
+    }
+    notification
+  end
+
+  private
+
   def body_json(homework, student, pr_title)
     body = {
       homework: homework,
