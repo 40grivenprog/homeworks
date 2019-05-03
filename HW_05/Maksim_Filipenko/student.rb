@@ -6,11 +6,14 @@ require_relative 'student'
 # This is class student
 class Student < Human
   include Web
-  attr_reader :homeworks, :submited
+  attr_reader :homeworks, :submited, :messages
+  attr_accessor :subscribers
   def initialize(fullname)
     @homeworks = []
     # @status = false
     @submited = []
+    @subscribers = []
+    @messages = []
     super
   end
 
@@ -25,6 +28,7 @@ class Student < Human
     do_request(hw.code, fullname, hw.pr_title)
     hw.status = true
     submited << hw.pr_title
+    @subscribers.last.notifs << notifications(self)
   end
 
   private
