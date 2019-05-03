@@ -1,5 +1,4 @@
 require_relative 'human'
-
 require_relative 'homework'
 require_relative 'web'
 
@@ -15,24 +14,17 @@ class Mentor < Human
 
   def subscribe_to_student(student)
     @subscribes << student
+    student.subscribers << self
   end
 
   def check_homeworks(student)
     hw = student.homeworks.last
-    hw.passed = true if hw.code.include? 'ruby'
-  end
-
-  def notifications(fullname)
-    st = find_std(fullname)
-    hw = st.homeworks.last
-    return unless !@subscribes.empty? && hw.status && hw.passed
-
-    notification = {
-      status: 'unread',
-      body: "#{st.fullname} has sent homework #{st.submited.last}"
-    }
-    notifs << notification
-    puts notification[:body]
+    if hw.code.include? 'ruby'
+      hw.passed = true
+      student.messages << "#{hw.pr_title} has passed!"
+    else
+      student.messages << "#{hw.pr_title} has some mistakes!Check it plese!!!"
+    end
   end
 
   def read_notifications!
